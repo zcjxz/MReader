@@ -2,6 +2,7 @@ package com.zcj.mreader.ui.gank.child;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,9 +28,15 @@ public class AndroidFragment extends BaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.rootView)
     FrameLayout rootView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<AndroidBean> dataList;
     private AndroidAdapter adapter;
+    private final int num=10;
+    private int page=1;
+    private boolean isLoading=false;
+    private LinearLayoutManager layoutManager;
 
     @Nullable
     @Override
@@ -42,8 +49,23 @@ public class AndroidFragment extends BaseFragment {
         if (adapter==null){
             adapter=new AndroidAdapter(dataList);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (layoutManager==null){
+            layoutManager = new LinearLayoutManager(getContext());
+        }
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1)){
+                    if (!isLoading){
+                        showLoadingView(true);
+                        setData(true);
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -52,30 +74,59 @@ public class AndroidFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         isPrepared=true;
         initView(rootView);
-
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (isLoading){
+                    swipeRefreshLayout.setRefreshing(false);
+                    return;
+                }
+                setData(false);
+            }
+        });
     }
 
-    @Override
-    protected void lazyLoad() {
-        showLoadingView(true);
-        HttpUtil.getInstance().getAndroidData(10, 1,
+    /**
+     * 获取数据
+     * @param isLast 判断是否在数据末尾追加数据
+     */
+    public void setData(final Boolean isLast){
+        isLoading=true;
+        HttpUtil.getInstance().getAndroidData(num, page,
                 new Observer<AndroidBean>() {
                     @Override
                     public void onCompleted() {
                         adapter.notifyDataSetChanged();
                         showLoadingView(false);
+                        swipeRefreshLayout.setRefreshing(false);
+                        page++;
+                        isLoading=false;
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        showLoadingView(false);
+                        showErrorView(true);
+                        isLoading=false;
                     }
 
                     @Override
                     public void onNext(AndroidBean androidBean) {
-                        dataList.add(androidBean);
+                        if (isLast){
+                            dataList.add(androidBean);
+                        }else{
+                            dataList.add(0,androidBean);
+                        }
                     }
                 });
+    }
 
+    @Override
+    protected void lazyLoad() {
+        if (dataList.size()==0){
+            showLoadingView(true);
+            setData(false);
+        }
     }
 }

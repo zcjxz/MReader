@@ -23,6 +23,15 @@ public class FuliBean {
     private String url;
     private boolean used;
     private String who;
+    private ImgBean imgBean;
+
+    public ImgBean getImgBean() {
+        return imgBean;
+    }
+
+    public void setImgBean(ImgBean imgBean) {
+        this.imgBean = imgBean;
+    }
 
     public String get_id() {
         return _id;

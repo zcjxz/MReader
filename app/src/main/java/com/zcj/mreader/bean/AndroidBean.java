@@ -1,6 +1,7 @@
 package com.zcj.mreader.bean;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AndroidBean {
@@ -101,6 +102,9 @@ public class AndroidBean {
     }
 
     public List<String> getImages() {
+        if (images==null){
+            images=new ArrayList<>();
+        }
         return images;
     }
 

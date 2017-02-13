@@ -4,6 +4,7 @@ package com.zcj.mreader.utils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.zcj.mreader.R;
 
 public class ImgLoadUtil {
@@ -24,10 +25,17 @@ public class ImgLoadUtil {
     public static void dispalyImage(String url, ImageView imageView,int type){
         Glide.with(imageView.getContext())
                 .load(url)
-                .crossFade(500)
+                .asBitmap()
                 .placeholder(type)
                 .error(type)
-                .into(imageView);
+                .into(new DriverViewTarget(imageView));
+    }
+
+    public static void dispalyImage(String url, ImageView imageView){
+        Glide.with(imageView.getContext())
+                .load(url)
+                .asBitmap()
+                .into(new DriverViewTarget(imageView));
     }
 
 }
