@@ -23,14 +23,14 @@
 	福利界面使用 RecycleView 实现瀑布流，完成了下拉刷新，上拉加载等功能
 ## 3.效果截图
 
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-38-54-352_com.zcj.mreade.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-38-54-352_com.zcj.mreade.png)
 	
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-07-883_com.zcj.mreade.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-07-883_com.zcj.mreade.png)
 	
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-15-222_com.zcj.mreade.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-15-222_com.zcj.mreade.png)
 	
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-39-523_com.zcj.mreade.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-39-39-523_com.zcj.mreade.png)
 	
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-40-40-771_com.zcj.mreade.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/Screenshot_2017-02-14-12-40-40-771_com.zcj.mreade.png)
 	
-![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/b08146fc8890ab1be20a0102dd696edf.png =400)
+![image](https://github.com/zcjxz/MReader/blob/master/Screenshot/b08146fc8890ab1be20a0102dd696edf.png)
