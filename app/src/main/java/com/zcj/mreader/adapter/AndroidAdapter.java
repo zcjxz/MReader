@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHolder>{
     private ArrayList<AndroidBean> dataList;
     private Context context;
-    private final int minImgSize=200;
+    private final int minImgSize=300;
     private final String reduceFormat="?imageView2/0/h/";
     public AndroidAdapter(ArrayList<AndroidBean> dataList){
         this.dataList=dataList;
@@ -52,7 +52,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
 //            ));
             holder.img.setVisibility(View.VISIBLE);
             String imgUrl = bean.getImages().get(0) + reduceFormat + minImgSize;
-            ImgLoadUtil.dispalyImage(imgUrl,holder.img,ImgLoadUtil.DF_BOOK);
+            ImgLoadUtil.dispalyImage(imgUrl,holder.img);
         }
     }
 

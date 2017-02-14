@@ -35,7 +35,8 @@ public class ImgLoadUtil {
         Glide.with(imageView.getContext())
                 .load(url)
                 .asBitmap()
-                .into(new DriverViewTarget(imageView));
+                .centerCrop()
+                .into(imageView);
     }
 
 }
