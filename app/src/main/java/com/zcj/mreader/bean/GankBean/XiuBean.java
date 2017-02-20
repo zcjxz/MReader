@@ -1,21 +1,20 @@
-package com.zcj.mreader.bean;
+package com.zcj.mreader.bean.gankBean;
 
+import com.zcj.mreader.bean.TypeFactory;
+import com.zcj.mreader.bean.Visitable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AndroidBean {
+//瞎推荐
+public class XiuBean implements Visitable{
     /**
-     * _id : 589d2bcd421aa9270bc7332c
-     * createdAt : 2017-02-10T10:56:13.792Z
-     * desc : Android 信用卡提交效果。
-     * images : ["http://img.gank.io/0df0d67f-6d39-4880-9a44-b2531ccb3a75"]
-     * publishedAt : 2017-02-10T11:38:22.122Z
+     * _id : 58a1aae3421aa901f56d3689
+     * createdAt : 2017-02-13T20:47:31.959Z
+     * desc : 旅行的意义是什么？
+     * publishedAt : 2017-02-14T11:42:37.303Z
      * source : chrome
-     * type : Android
-     * url : https://github.com/adonixis/android-sumbit-credit-card-flow
+     * type : 休息视频
+     * url : http://www.miaopai.com/show/day~eckkasQUW7~0u6O~fg__.htm
      * used : true
-     * who : 代码家
+     * who : lxxself
      */
 
     private String _id;
@@ -27,7 +26,6 @@ public class AndroidBean {
     private String url;
     private boolean used;
     private String who;
-    private List<String> images;
 
     public String get_id() {
         return _id;
@@ -101,14 +99,8 @@ public class AndroidBean {
         this.who = who;
     }
 
-    public List<String> getImages() {
-        if (images==null){
-            images=new ArrayList<>();
-        }
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
+    @Override
+    public int type(TypeFactory typeFactory) {
+        return typeFactory.type(this);
     }
 }

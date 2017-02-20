@@ -9,16 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zcj.mreader.R;
 import com.zcj.mreader.adapter.FuliAdapter;
 import com.zcj.mreader.base.BaseFragment;
-import com.zcj.mreader.bean.FuliBean;
-import com.zcj.mreader.utils.DebugUtil;
+import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.utils.HttpUtil;
-import com.zcj.mreader.utils.TimeUtil;
 
 import java.util.ArrayList;
 

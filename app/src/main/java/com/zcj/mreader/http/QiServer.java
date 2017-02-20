@@ -1,7 +1,7 @@
 package com.zcj.mreader.http;
 
 
-import com.zcj.mreader.bean.ImgBean;
+import com.zcj.mreader.bean.gankBean.ImgBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

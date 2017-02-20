@@ -1,4 +1,4 @@
-package com.zcj.mreader.bean;
+package com.zcj.mreader.bean.gankBean;
 
 
 public class ImgBean {

@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import com.zcj.mreader.R;
 import com.zcj.mreader.adapter.AndroidAdapter;
 import com.zcj.mreader.base.BaseFragment;
-import com.zcj.mreader.bean.AndroidBean;
+import com.zcj.mreader.bean.gankBean.AndroidBean;
 import com.zcj.mreader.utils.HttpUtil;
 
 import java.util.ArrayList;

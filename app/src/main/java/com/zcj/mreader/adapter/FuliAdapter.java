@@ -5,21 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.zcj.mreader.R;
-import com.zcj.mreader.bean.FuliBean;
-import com.zcj.mreader.bean.ImgBean;
-import com.zcj.mreader.utils.DebugUtil;
-import com.zcj.mreader.utils.HttpUtil;
+import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.utils.ImgLoadUtil;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
 
 public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.ViewHolder>{
     private ArrayList<FuliBean> dataList;

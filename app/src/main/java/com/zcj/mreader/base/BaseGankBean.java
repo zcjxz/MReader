@@ -2,7 +2,7 @@ package com.zcj.mreader.base;
 
 import java.util.List;
 
-public class BaseBean<T>{
+public class BaseGankBean<T>{
 
     /**
      * error : false

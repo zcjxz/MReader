@@ -1,6 +1,8 @@
 package com.zcj.mreader.utils;
 
 
+import com.zcj.mreader.bean.other.TimeBean;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,13 +17,13 @@ public class TimeUtil {
     private static TimeUtil INSTANCE;
     private TimeUtil(){
     }
-    public static TimeUtil getINSTANCE(){
+    public static synchronized TimeUtil getINSTANCE(){
         if (INSTANCE==null){
             INSTANCE=new TimeUtil();
         }
         return INSTANCE;
     }
-    public static String getTime(String serviceTime){
+    public String getDay(String serviceTime){
         if (sdf_s==null){
             sdf_s=new SimpleDateFormat(PAT_SERVICE);
         }
@@ -36,5 +38,16 @@ public class TimeUtil {
             e.printStackTrace();
         }
         return "时间格式化失败";
+    }
+    public String getTimeBean(String from,String to,String date){
+        SimpleDateFormat fromFormat=new SimpleDateFormat(from);
+        SimpleDateFormat toFormat=new SimpleDateFormat(to);
+        Date timeDate=null;
+        try {
+            timeDate=fromFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return toFormat.format(timeDate);
     }
 }

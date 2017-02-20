@@ -1,15 +1,22 @@
-package com.zcj.mreader.bean;
+package com.zcj.mreader.bean.gankBean;
 
-public class FuliBean {
+
+import com.zcj.mreader.bean.TypeFactory;
+import com.zcj.mreader.bean.Visitable;
+
+import java.util.List;
+
+public class IOSBean implements Visitable{
 
     /**
-     * _id : 589d31a2421aa9270bc7332e
-     * createdAt : 2017-02-10T11:21:06.747Z
-     * desc : 2-10
-     * publishedAt : 2017-02-10T11:38:22.122Z
+     * _id : 58a27783421aa901f7902c7c
+     * createdAt : 2017-02-14T11:20:35.561Z
+     * desc : 给 UICollectionView 加上各种漂亮的过渡效果。
+     * images : ["http://img.gank.io/5fccc6dd-091d-4562-90ee-431015865cba","http://img.gank.io/efe9f74c-0fe1-4c99-a201-6bbb5f312b67","http://img.gank.io/caa08430-8d9e-477b-b726-19fa19d7dbbf"]
+     * publishedAt : 2017-02-14T11:42:37.303Z
      * source : chrome
-     * type : 福利
-     * url : http://7xi8d6.com1.z0.glb.clouddn.com/2017-02-10-16465759_171779496648995_128281069584646144_n.jpg
+     * type : iOS
+     * url : https://github.com/KelvinJin/AnimatedCollectionViewLayout
      * used : true
      * who : 代码家
      */
@@ -23,15 +30,7 @@ public class FuliBean {
     private String url;
     private boolean used;
     private String who;
-    private ImgBean imgBean;
-
-    public ImgBean getImgBean() {
-        return imgBean;
-    }
-
-    public void setImgBean(ImgBean imgBean) {
-        this.imgBean = imgBean;
-    }
+    private List<String> images;
 
     public String get_id() {
         return _id;
@@ -103,5 +102,18 @@ public class FuliBean {
 
     public void setWho(String who) {
         this.who = who;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    @Override
+    public int type(TypeFactory typeFactory) {
+        return typeFactory.type(this);
     }
 }

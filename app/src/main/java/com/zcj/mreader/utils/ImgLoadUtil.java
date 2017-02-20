@@ -16,7 +16,7 @@ public class ImgLoadUtil {
     private ImgLoadUtil(){
 
     }
-    public static ImgLoadUtil Instance(){
+    public static synchronized ImgLoadUtil Instance(){
         if (INSTANCE==null){
             INSTANCE=new ImgLoadUtil();
         }
@@ -36,6 +36,11 @@ public class ImgLoadUtil {
                 .load(url)
                 .asBitmap()
                 .centerCrop()
+                .into(imageView);
+    }
+    public static void displayLocalImage(int id,ImageView imageView){
+        Glide.with(imageView.getContext())
+                .load(id)
                 .into(imageView);
     }
 

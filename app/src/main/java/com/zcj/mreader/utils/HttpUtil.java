@@ -2,12 +2,21 @@ package com.zcj.mreader.utils;
 
 
 
-import com.zcj.mreader.base.BaseBean;
-import com.zcj.mreader.bean.AndroidBean;
-import com.zcj.mreader.bean.FuliBean;
-import com.zcj.mreader.bean.ImgBean;
+import com.zcj.mreader.base.BaseGankBean;
+import com.zcj.mreader.bean.gankBean.AndroidBean;
+import com.zcj.mreader.bean.gankBean.EveryDayBean;
+import com.zcj.mreader.bean.gankBean.FuliBean;
+import com.zcj.mreader.bean.gankBean.IOSBean;
+import com.zcj.mreader.bean.gankBean.ImgBean;
+import com.zcj.mreader.bean.gankBean.QianBean;
+import com.zcj.mreader.bean.gankBean.TuoBean;
+import com.zcj.mreader.bean.gankBean.XiuBean;
+import com.zcj.mreader.bean.other.TimeBean;
+import com.zcj.mreader.event.GetLastEvent;
 import com.zcj.mreader.http.GankServer;
 import com.zcj.mreader.http.QiServer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -15,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -34,7 +44,7 @@ public class HttpUtil {
     private HttpUtil(){
     }
 
-    public static HttpUtil getInstance(){
+    public static synchronized HttpUtil getInstance(){
         if (INSTANCE==null){
             INSTANCE=new HttpUtil();
         }
@@ -57,13 +67,13 @@ public class HttpUtil {
 
     public void getAndroidData(int num ,int page,Observer<AndroidBean> observer){
         createGankRetrofit();
-        Observable<BaseBean<AndroidBean>> observable = gankServer.getAndroidData(num, page);
+        Observable<BaseGankBean<AndroidBean>> observable = gankServer.getAndroidData(num, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Func1<BaseBean<AndroidBean>, Observable<AndroidBean>>() {
+                .flatMap(new Func1<BaseGankBean<AndroidBean>, Observable<AndroidBean>>() {
                     @Override
-                    public Observable<AndroidBean> call(BaseBean<AndroidBean> baseBean) {
-                        return Observable.from(baseBean.getResults());
+                    public Observable<AndroidBean> call(BaseGankBean<AndroidBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
                     }
                 })
                 .subscribe(observer);
@@ -71,41 +81,105 @@ public class HttpUtil {
 
     public void getFuliData(int num , int page , Observer<FuliBean> observer){
         createGankRetrofit();
-        Observable<BaseBean<FuliBean>> observable = gankServer.getFuliData(num, page);
+        Observable<BaseGankBean<FuliBean>> observable = gankServer.getFuliData(num, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Func1<BaseBean<FuliBean>, Observable<FuliBean>>() {
+                .flatMap(new Func1<BaseGankBean<FuliBean>, Observable<FuliBean>>() {
                     @Override
-                    public Observable<FuliBean> call(BaseBean<FuliBean> baseBean) {
-                        return Observable.from(baseBean.getResults());
+                    public Observable<FuliBean> call(BaseGankBean<FuliBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
                     }
                 })
-//                .flatMap(new Func1<FuliBean, Observable<FuliBean>>() {
-//                    @Override
-//                    public Observable<FuliBean> call(FuliBean fuliBean) {
-//                        final FuliBean fuli=fuliBean;
-//                        String imgSrc = fuliBean.getUrl().substring(qiBaseUrl.length());
-//                        HttpUtil.getInstance().getImgInfo(imgSrc,
-//                                new Observer<ImgBean>() {
-//                                    @Override
-//                                    public void onCompleted() {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Throwable e) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onNext(ImgBean imgBean) {
-//                                        fuli.setImgBean(imgBean);
-//                                    }
-//                                });
-//                        return Observable.just(fuli);
-//                    }
-//                })
                 .subscribe(observer);
+    }
+    //ios
+    public void getIOSData(int num, int page, Observer<IOSBean> observer){
+        createGankRetrofit();
+        Observable<BaseGankBean<IOSBean>> observable = gankServer.getIOSData(num, page);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<BaseGankBean<IOSBean>, Observable<IOSBean>>() {
+                    @Override
+                    public Observable<IOSBean> call(BaseGankBean<IOSBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
+                    }
+                })
+                .subscribe(observer);
+    }
+    //前端
+    public void getQianData(int num, int page, Observer<QianBean> observer){
+        createGankRetrofit();
+        Observable<BaseGankBean<QianBean>> observable =gankServer.getQianData(num,page);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<BaseGankBean<QianBean>, Observable<QianBean>>() {
+                    @Override
+                    public Observable<QianBean> call(BaseGankBean<QianBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
+                    }
+                })
+                .subscribe(observer);
+    }
+    //休息视频
+    public void getXiuData(int num, int page, Observer<XiuBean> observer){
+        createGankRetrofit();
+        Observable<BaseGankBean<XiuBean>> observable=gankServer.getXiuData(num,page);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<BaseGankBean<XiuBean>, Observable<XiuBean>>() {
+                    @Override
+                    public Observable<XiuBean> call(BaseGankBean<XiuBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
+                    }
+                })
+                .subscribe(observer);
+    }
+
+    public void getTuoData(int num, int page, Observer<TuoBean> observer){
+        createGankRetrofit();
+        Observable<BaseGankBean<TuoBean>> observable = gankServer.getTuoData(num, page);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<BaseGankBean<TuoBean>, Observable<TuoBean>>() {
+                    @Override
+                    public Observable<TuoBean> call(BaseGankBean<TuoBean> baseGankBean) {
+                        return Observable.from(baseGankBean.getResults());
+                    }
+                })
+                .subscribe(observer);
+    }
+
+
+
+    public void getEveryDayData(int year, int month, int day, Observer<EveryDayBean> observer){
+        createGankRetrofit();
+        Observable<EveryDayBean> observable = gankServer.getEveryDayData(year, month, day);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+
+    public void getLastDay(){
+        createGankRetrofit();
+        Observable<BaseGankBean<String>> observable = gankServer.getLastDay();
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Func1<BaseGankBean<String>, String>() {
+                    @Override
+                    public String call(BaseGankBean<String> baseGankBean) {
+                        return baseGankBean.getResults().get(0);
+                    }
+                })
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        //返回格式："2017-02-16",
+                        GetLastEvent event=new GetLastEvent();
+                        event.setDay(s);
+                        EventBus.getDefault().post(event);
+                    }
+                });
+
     }
 
     //7星 API

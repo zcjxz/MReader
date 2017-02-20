@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zcj.mreader.R;
-import com.zcj.mreader.bean.AndroidBean;
+import com.zcj.mreader.bean.gankBean.AndroidBean;
 
 import com.zcj.mreader.utils.ImgLoadUtil;
 import com.zcj.mreader.utils.TimeUtil;
@@ -42,7 +41,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
         AndroidBean bean=dataList.get(position);
         holder.title.setText(bean.getDesc());
         holder.author.setText(bean.getWho());
-        holder.time.setText(TimeUtil.getINSTANCE().getTime(bean.getCreatedAt()));
+        holder.time.setText(TimeUtil.getINSTANCE().getDay(bean.getCreatedAt()));
         if (bean.getImages()==null||bean.getImages().size()==0){
 //            holder.img.setLayoutParams(new RelativeLayout.LayoutParams(0, RelativeLayout.LayoutParams.MATCH_PARENT));
             holder.img.setVisibility(View.GONE);
