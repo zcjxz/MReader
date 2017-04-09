@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.zcj.mreader.R;
 import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.utils.ImgLoadUtil;
+import com.zcj.mreader.utils.StartUtil;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,8 @@ public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        FuliBean fuliBean=dataList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final FuliBean fuliBean=dataList.get(position);
 //        ImgBean imgBean=fuliBean.getImgBean();
 //        int scale = imgBean.getHeight() / imgBean.getWidth();
 //        ImageView img=holder.img;
@@ -45,6 +46,12 @@ public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.ViewHolder>{
 //        img.setLayoutParams(layoutParams);
         String imgUrl = fuliBean.getUrl() + reduceFormat + minImgSize;
         ImgLoadUtil.dispalyImage(imgUrl,holder.img,ImgLoadUtil.DF_MEIZI);
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartUtil.startWebActivity(context,fuliBean.getUrl());
+            }
+        });
 //        String imgSrc = fuliBean.getUrl().substring(qiBaseUrl.length());
 //        DebugUtil.debug(imgSrc);
 //        HttpUtil.getInstance().getImgInfo(imgSrc,

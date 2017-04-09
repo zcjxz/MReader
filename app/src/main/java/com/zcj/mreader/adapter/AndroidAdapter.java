@@ -2,17 +2,21 @@ package com.zcj.mreader.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zcj.mreader.R;
 import com.zcj.mreader.bean.gankBean.AndroidBean;
 
+import com.zcj.mreader.ui.WebActivity;
 import com.zcj.mreader.utils.ImgLoadUtil;
+import com.zcj.mreader.utils.StartUtil;
 import com.zcj.mreader.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -38,7 +42,7 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        AndroidBean bean=dataList.get(position);
+        final AndroidBean bean=dataList.get(position);
         holder.title.setText(bean.getDesc());
         holder.author.setText(bean.getWho());
         holder.time.setText(TimeUtil.getINSTANCE().getDay(bean.getCreatedAt()));
@@ -53,6 +57,13 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
             String imgUrl = bean.getImages().get(0) + reduceFormat + minImgSize;
             ImgLoadUtil.dispalyImage(imgUrl,holder.img);
         }
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartUtil.startWebActivity(context,bean.getUrl());
+            }
+        });
+
     }
 
     @Override
@@ -69,6 +80,8 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.ViewHold
         TextView author;
         @BindView(R.id.img)
         ImageView img;
+        @BindView(R.id.rootView)
+        FrameLayout rootView;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

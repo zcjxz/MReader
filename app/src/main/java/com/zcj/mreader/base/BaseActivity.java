@@ -1,6 +1,7 @@
 package com.zcj.mreader.base;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.zcj.mreader.R;
+import com.zcj.mreader.ui.WebActivity;
 import com.zcj.mreader.utils.DebugUtil;
 
 import butterknife.BindView;

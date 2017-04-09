@@ -1,5 +1,6 @@
 package com.zcj.mreader.ui.gank.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.bean.gankBean.QianBean;
 import com.zcj.mreader.bean.gankBean.TuoBean;
 import com.zcj.mreader.bean.gankBean.XiuBean;
+import com.zcj.mreader.ui.WebActivity;
 import com.zcj.mreader.utils.DebugUtil;
 import com.zcj.mreader.utils.HttpUtil;
 import com.zcj.mreader.utils.ImgLoadUtil;
+import com.zcj.mreader.utils.StartUtil;
 
 
 import java.util.ArrayList;
@@ -144,13 +147,19 @@ public class XiaFragment extends BaseFragment {
             @Override
             public void onCompleted() {
                 for (int i=0; i<androidImgs.size();i++){
-                    AndroidBean androidBean = androidData.get(i);
+                    final AndroidBean androidBean = androidData.get(i);
                     androidDes.get(i).setText(androidBean.getDesc());
                     if (androidBean.getImages()!=null&&androidBean.getImages().size()>0){
                         ImgLoadUtil.dispalyImage(androidBean.getImages().get(0),androidImgs.get(i));
                     }else{
                         ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,androidImgs.get(i));
                     }
+                    androidImgs.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            StartUtil.startWebActivity(getContext(),androidBean.getUrl());
+                        }
+                    });
                 }
             }
 
@@ -168,13 +177,19 @@ public class XiaFragment extends BaseFragment {
             @Override
             public void onCompleted() {
                 for (int i=0; i<qianImgs.size();i++){
-                    QianBean qianBean = qianData.get(i);
+                    final QianBean qianBean = qianData.get(i);
                     qianDes.get(i).setText(qianBean.getDesc());
                     if (qianBean.getImages()!=null&&qianBean.getImages().size()>0){
                         ImgLoadUtil.dispalyImage(qianBean.getImages().get(0),qianImgs.get(i));
                     }else{
                         ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,qianImgs.get(i));
                     }
+                    qianImgs.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            StartUtil.startWebActivity(getContext(),qianBean.getUrl());
+                        }
+                    });
                 }
             }
 
@@ -190,8 +205,14 @@ public class XiaFragment extends BaseFragment {
         HttpUtil.getInstance().getFuliData(1, 1, new Observer<FuliBean>() {
             @Override
             public void onCompleted() {
-                FuliBean fuliBean = fulData.get(0);
+                final FuliBean fuliBean = fulData.get(0);
                 ImgLoadUtil.dispalyImage(fuliBean.getUrl(),fuliImg);
+                fuliImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        StartUtil.startWebActivity(getContext(),fuliBean.getUrl());
+                    }
+                });
             }
 
             @Override
@@ -208,13 +229,19 @@ public class XiaFragment extends BaseFragment {
             @Override
             public void onCompleted() {
                 for (int i = 0; i< tuoImgs.size(); i++){
-                    TuoBean tuoBean = tuoData.get(i);
+                    final TuoBean tuoBean = tuoData.get(i);
                     tuoDes.get(i).setText(tuoBean.getDesc());
                     if (tuoBean.getImages()!=null&&tuoBean.getImages().size()>0){
                         ImgLoadUtil.dispalyImage(tuoBean.getImages().get(0),tuoImgs.get(i));
                     }else{
                         ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,tuoImgs.get(i));
                     }
+                    tuoImgs.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            StartUtil.startWebActivity(getContext(),tuoBean.getUrl());
+                        }
+                    });
                 }
             }
 
