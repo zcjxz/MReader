@@ -46,12 +46,13 @@ public class FuliAdapter extends RecyclerView.Adapter<FuliAdapter.ViewHolder>{
 //        img.setLayoutParams(layoutParams);
         String imgUrl = fuliBean.getUrl() + reduceFormat + minImgSize;
         ImgLoadUtil.dispalyImage(imgUrl,holder.img,ImgLoadUtil.DF_MEIZI);
-        holder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StartUtil.startWebActivity(context,fuliBean.getUrl());
-            }
-        });
+        //暂时跳转后，显示不了图片，先注释掉
+//        holder.img.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                StartUtil.startWebActivity(context,fuliBean.getUrl());
+//            }
+//        });
 //        String imgSrc = fuliBean.getUrl().substring(qiBaseUrl.length());
 //        DebugUtil.debug(imgSrc);
 //        HttpUtil.getInstance().getImgInfo(imgSrc,

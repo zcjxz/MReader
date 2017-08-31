@@ -1,6 +1,5 @@
 package com.zcj.mreader.ui.gank.child;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,10 +14,7 @@ import com.zcj.mreader.bean.gankBean.AndroidBean;
 import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.bean.gankBean.QianBean;
 import com.zcj.mreader.bean.gankBean.TuoBean;
-import com.zcj.mreader.bean.gankBean.XiuBean;
-import com.zcj.mreader.ui.WebActivity;
-import com.zcj.mreader.utils.DebugUtil;
-import com.zcj.mreader.utils.HttpUtil;
+import com.zcj.mreader.http.HttpUtil;
 import com.zcj.mreader.utils.ImgLoadUtil;
 import com.zcj.mreader.utils.StartUtil;
 
@@ -207,12 +203,13 @@ public class XiaFragment extends BaseFragment {
             public void onCompleted() {
                 final FuliBean fuliBean = fulData.get(0);
                 ImgLoadUtil.dispalyImage(fuliBean.getUrl(),fuliImg);
-                fuliImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        StartUtil.startWebActivity(getContext(),fuliBean.getUrl());
-                    }
-                });
+                //暂时跳转后有问题，先不用
+//                fuliImg.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        StartUtil.startWebActivity(getContext(),fuliBean.getUrl());
+//                    }
+//                });
             }
 
             @Override

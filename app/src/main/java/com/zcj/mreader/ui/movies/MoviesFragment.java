@@ -33,6 +33,6 @@ public class MoviesFragment extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
-        text.setText(text.getText()+"/n数据加载完成");
+        text.setText(text.getText()+"\n数据加载完成");
     }
 }

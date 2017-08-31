@@ -1,20 +1,17 @@
 package com.zcj.mreader.base;
 
 
-import android.content.Intent;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.zcj.mreader.R;
-import com.zcj.mreader.ui.WebActivity;
+
 
 public abstract class BaseFragment extends Fragment{
     protected boolean isVisible=false;

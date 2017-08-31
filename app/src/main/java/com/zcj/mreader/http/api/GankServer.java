@@ -1,4 +1,4 @@
-package com.zcj.mreader.http;
+package com.zcj.mreader.http.api;
 
 
 import com.zcj.mreader.base.BaseGankBean;

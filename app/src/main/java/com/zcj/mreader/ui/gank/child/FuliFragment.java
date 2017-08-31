@@ -14,7 +14,7 @@ import com.zcj.mreader.R;
 import com.zcj.mreader.adapter.FuliAdapter;
 import com.zcj.mreader.base.BaseFragment;
 import com.zcj.mreader.bean.gankBean.FuliBean;
-import com.zcj.mreader.utils.HttpUtil;
+import com.zcj.mreader.http.HttpUtil;
 
 import java.util.ArrayList;
 
@@ -108,6 +108,7 @@ public class FuliFragment extends BaseFragment {
                     public void onCompleted() {
                         adapter.notifyDataSetChanged();
                         showLoadingView(false);
+                        showErrorView(false);
                         swipeRefreshLayout.setRefreshing(false);
                         page++;
                         isLoading=false;

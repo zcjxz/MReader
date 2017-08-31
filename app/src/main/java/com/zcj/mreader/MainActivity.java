@@ -1,5 +1,8 @@
 package com.zcj.mreader;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -20,6 +23,7 @@ import com.zcj.mreader.base.BaseActivity;
 import com.zcj.mreader.ui.book.BookFragment;
 import com.zcj.mreader.ui.gank.GankFragment;
 import com.zcj.mreader.ui.movies.MoviesFragment;
+import com.zcj.mreader.ui.nav.AboutActivity;
 
 import java.util.HashMap;
 
@@ -42,6 +46,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     ImageView btnMovies;
     @BindView(R.id.btn_book)
     ImageView btnBook;
+    @BindView(R.id.navigation_view)
+    NavigationView navigationView;
     private SparseArray<Fragment> fragmentMap;
     private SparseArray<ImageView> btnMap;
     private SparseArray<String> titleMap;
@@ -54,7 +60,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         initView(flContent);
         initFragment();
         initListener();
-
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -119,6 +132,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch(item.getItemId()){
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

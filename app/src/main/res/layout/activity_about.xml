@@ -5,5 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.zcj.mreader.ui.nav.AboutActivity">
-
+    <TextView
+        android:gravity="center"
+        android:textSize="30sp"
+        android:text="关于页面"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

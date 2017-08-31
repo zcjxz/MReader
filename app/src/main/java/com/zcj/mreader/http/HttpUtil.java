@@ -1,4 +1,4 @@
-package com.zcj.mreader.utils;
+package com.zcj.mreader.http;
 
 
 
@@ -11,10 +11,9 @@ import com.zcj.mreader.bean.gankBean.ImgBean;
 import com.zcj.mreader.bean.gankBean.QianBean;
 import com.zcj.mreader.bean.gankBean.TuoBean;
 import com.zcj.mreader.bean.gankBean.XiuBean;
-import com.zcj.mreader.bean.other.TimeBean;
 import com.zcj.mreader.event.GetLastEvent;
-import com.zcj.mreader.http.GankServer;
-import com.zcj.mreader.http.QiServer;
+import com.zcj.mreader.http.api.GankServer;
+import com.zcj.mreader.http.api.QiServer;
 
 import org.greenrobot.eventbus.EventBus;
 
