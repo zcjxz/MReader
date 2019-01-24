@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.zcj.mreader.ui.WebActivity;
 
+
 public class StartUtil {
     private static StartUtil INSTANCE;
     private StartUtil(){

@@ -21,7 +21,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.zcj.mreader.R;
-import com.zcj.mreader.ui.WebActivity;
+
 import com.zcj.mreader.utils.DebugUtil;
 
 import butterknife.BindView;

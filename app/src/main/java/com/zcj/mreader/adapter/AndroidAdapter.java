@@ -12,9 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zcj.mreader.R;
-import com.zcj.mreader.bean.gankBean.AndroidBean;
 
-import com.zcj.mreader.ui.WebActivity;
+import com.zcj.mreader.bean.gankBean.AndroidBean;
 import com.zcj.mreader.utils.ImgLoadUtil;
 import com.zcj.mreader.utils.StartUtil;
 import com.zcj.mreader.utils.TimeUtil;
