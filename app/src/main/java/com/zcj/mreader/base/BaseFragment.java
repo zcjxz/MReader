@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.zcj.mreader.R;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 
 public abstract class BaseFragment extends Fragment{
     protected boolean isVisible=false;
@@ -112,4 +115,14 @@ public abstract class BaseFragment extends Fragment{
         }
     }
 
+    private CompositeDisposable disposableSet=new CompositeDisposable();
+    protected void addObserver(Disposable disposable){
+        disposableSet.add(disposable);
+    }
+
+    @Override
+    public void onDestroyView() {
+        disposableSet.clear();
+        super.onDestroyView();
+    }
 }

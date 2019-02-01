@@ -6,15 +6,17 @@ import com.zcj.mreader.bean.gankBean.AndroidBean;
 import com.zcj.mreader.bean.gankBean.EveryDayBean;
 import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.bean.gankBean.IOSBean;
+import com.zcj.mreader.bean.gankBean.ImgBean;
 import com.zcj.mreader.bean.gankBean.QianBean;
 import com.zcj.mreader.bean.gankBean.TuoBean;
 import com.zcj.mreader.bean.gankBean.XiuBean;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
 
-public interface GankServer {
+
+public interface APIServer {
     //获取Android数据
     @GET("data/Android/{num}/{page}")
     Observable<BaseGankBean<AndroidBean>> getAndroidData(@Path("num") int num, @Path("page") int page);
@@ -45,4 +47,7 @@ public interface GankServer {
     //获取更新历史
     @GET("day/history")
     Observable<BaseGankBean<String>> getLastDay();
+    //获取图片信息
+    @GET("{src}?imageInfo")
+    Observable<ImgBean> getImgInfo(@Path("src") String src);
 }

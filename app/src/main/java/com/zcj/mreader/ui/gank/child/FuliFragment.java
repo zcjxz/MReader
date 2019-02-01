@@ -1,5 +1,6 @@
 package com.zcj.mreader.ui.gank.child;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,17 +11,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.zcj.mreader.Const;
 import com.zcj.mreader.R;
 import com.zcj.mreader.adapter.FuliAdapter;
 import com.zcj.mreader.base.BaseFragment;
+import com.zcj.mreader.base.BaseGankBean;
 import com.zcj.mreader.bean.gankBean.FuliBean;
-import com.zcj.mreader.http.HttpUtil;
+import com.zcj.mreader.http.ApiRequest;
+import com.zcj.mreader.utils.ImgLoadUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class FuliFragment extends BaseFragment {
@@ -28,8 +49,7 @@ public class FuliFragment extends BaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.rootView)
     FrameLayout rootView;
-    @BindView(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+
     private ArrayList<FuliBean> dataList;
     private FuliAdapter adapter;
     private int num=10;
@@ -53,8 +73,8 @@ public class FuliFragment extends BaseFragment {
             layoutManager = new StaggeredGridLayoutManager(
                     row, StaggeredGridLayoutManager.VERTICAL
             );
-            //防止瀑布流发生位置变化
-            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            //防止瀑布流发生位置变化，但是会导致很多空白
+//            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -62,14 +82,14 @@ public class FuliFragment extends BaseFragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                //防止第一行留空白
-                layoutManager.invalidateSpanAssignments();
+                // 刷新布局，重新计算布局
+//                layoutManager.invalidateSpanAssignments();
                 //判断是否滑动到底
                 if (!recyclerView.canScrollVertically(1)) {
                     //判断是否在加载状态
                     if (!isLoading){
                         showLoadingView(true);
-                        setData(true);
+                        setData();
                     }
                 }
             }
@@ -82,36 +102,69 @@ public class FuliFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         isPrepared=true;
         initView(rootView);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (isLoading){
-                    swipeRefreshLayout.setRefreshing(false);
-                    return;
-                }
-                setData(false);
-            }
-        });
-
     }
 
+    int lastSize =0;
     /**
      * 连接服务器，获取数据
-     * @param isLast 用于判断是否在数据末尾追加数据
      */
-    private void setData(final Boolean isLast){
+    private void setData(){
         isLoading=true;
-        HttpUtil.getInstance().getFuliData(num, page,
-                new Observer<FuliBean>() {
+        //请求数据
+        ApiRequest.getServer().getFuliData(num, page)
+                .compose(ApiRequest.<BaseGankBean<FuliBean>>preRequest())
+                .map(new Function<BaseGankBean<FuliBean>, List<FuliBean>>() {
                     @Override
-                    public void onCompleted() {
-                        adapter.notifyDataSetChanged();
+                    public List<FuliBean> apply(BaseGankBean<FuliBean> fuliBeanBaseGankBean) throws Exception {
+                        return fuliBeanBaseGankBean.getResults();
+                    }
+                })
+                .flatMap(new Function<List<FuliBean>, ObservableSource<FuliBean>>() {
+                    @Override
+                    public ObservableSource<FuliBean> apply(List<FuliBean> fuliBeans) throws Exception {
+                        return Observable.fromIterable(fuliBeans);
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .map(new Function<FuliBean, FuliBean>() {
+                    @Override
+                    public FuliBean apply(FuliBean fuliBean) throws Exception {
+                        String url = fuliBean.getUrl();
+                        if (url!=null) {
+                            try {
+                                // 同步下载图片，可设置获取到的 bitmap 大小，但是实际下载的还是原图
+                                Bitmap bitmap = Glide.with(getActivity())
+                                        .asBitmap()
+                                        .load(url)
+                                        .into(400, 400)
+                                        .get();
+                                ImgLoadUtil.wirteBitmap2File(bitmap, Const.FilePath.imgCache,fuliBean.get_id()+".png");
+                                int height = bitmap.getHeight();
+                                int width = bitmap.getWidth();
+                                fuliBean.setHeight(height);
+                                fuliBean.setWidth(width);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return fuliBean;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<FuliBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
                         showLoadingView(false);
                         showErrorView(false);
-                        swipeRefreshLayout.setRefreshing(false);
-                        page++;
-                        isLoading=false;
+                    }
+
+                    @Override
+                    public void onNext(FuliBean fuliBean) {
+                        dataList.add(fuliBean);
+                        int index = dataList.indexOf(fuliBean);
+                        adapter.notifyItemChanged(index);
                     }
 
                     @Override
@@ -119,24 +172,22 @@ public class FuliFragment extends BaseFragment {
                         showLoadingView(false);
                         isLoading=false;
                         showErrorView(true);
+                        e.printStackTrace();
                     }
 
                     @Override
-                    public void onNext(FuliBean fuliBean) {
-                        if (isLast){
-                            dataList.add(fuliBean);
-                        }else{
-                            dataList.add(0,fuliBean);
-                        }
+                    public void onComplete() {
+                        lastSize = dataList.size();
+                        page++;
+                        isLoading=false;
                     }
-                }
-        );
+                });
     }
     @Override
     protected void lazyLoad() {
         if (dataList.size()==0){
             showLoadingView(true);
-            setData(false);
+            setData();
         }
     }
 

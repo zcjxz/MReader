@@ -14,14 +14,15 @@ import com.zcj.mreader.bean.gankBean.AndroidBean;
 import com.zcj.mreader.bean.gankBean.FuliBean;
 import com.zcj.mreader.bean.gankBean.QianBean;
 import com.zcj.mreader.bean.gankBean.TuoBean;
-import com.zcj.mreader.http.HttpUtil;
+import com.zcj.mreader.http.ApiRequest;
 import com.zcj.mreader.utils.ImgLoadUtil;
 import com.zcj.mreader.utils.StartUtil;
 
 
 import java.util.ArrayList;
 
-import rx.Observer;
+import io.reactivex.Observable;
+
 
 
 public class XiaFragment extends BaseFragment {
@@ -139,118 +140,119 @@ public class XiaFragment extends BaseFragment {
         qianData.clear();
         fulData.clear();
         tuoData.clear();
-        HttpUtil.getInstance().getAndroidData(3, 1, new Observer<AndroidBean>() {
-            @Override
-            public void onCompleted() {
-                for (int i=0; i<androidImgs.size();i++){
-                    final AndroidBean androidBean = androidData.get(i);
-                    androidDes.get(i).setText(androidBean.getDesc());
-                    if (androidBean.getImages()!=null&&androidBean.getImages().size()>0){
-                        ImgLoadUtil.dispalyImage(androidBean.getImages().get(0),androidImgs.get(i));
-                    }else{
-                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,androidImgs.get(i));
-                    }
-                    androidImgs.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            StartUtil.startWebActivity(getContext(),androidBean.getUrl());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(AndroidBean androidBean) {
-                androidData.add(androidBean);
-            }
-        });
-        HttpUtil.getInstance().getQianData(3, 1, new Observer<QianBean>() {
-            @Override
-            public void onCompleted() {
-                for (int i=0; i<qianImgs.size();i++){
-                    final QianBean qianBean = qianData.get(i);
-                    qianDes.get(i).setText(qianBean.getDesc());
-                    if (qianBean.getImages()!=null&&qianBean.getImages().size()>0){
-                        ImgLoadUtil.dispalyImage(qianBean.getImages().get(0),qianImgs.get(i));
-                    }else{
-                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,qianImgs.get(i));
-                    }
-                    qianImgs.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            StartUtil.startWebActivity(getContext(),qianBean.getUrl());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(QianBean qianBean) {
-                qianData.add(qianBean);
-            }
-        });
-        HttpUtil.getInstance().getFuliData(1, 1, new Observer<FuliBean>() {
-            @Override
-            public void onCompleted() {
-                final FuliBean fuliBean = fulData.get(0);
-                ImgLoadUtil.dispalyImage(fuliBean.getUrl(),fuliImg);
-                //暂时跳转后有问题，先不用
-//                fuliImg.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        StartUtil.startWebActivity(getContext(),fuliBean.getUrl());
+        //请求网络数据接口
+//        ApiRequest.getServer().getAndroidData(3, 1).subscribe(new Observable<AndroidBean>() {
+//            @Override
+//            public void onCompleted() {
+//                for (int i=0; i<androidImgs.size();i++){
+//                    final AndroidBean androidBean = androidData.get(i);
+//                    androidDes.get(i).setText(androidBean.getDesc());
+//                    if (androidBean.getImages()!=null&&androidBean.getImages().size()>0){
+//                        ImgLoadUtil.displayImage(androidBean.getImages().get(0),androidImgs.get(i));
+//                    }else{
+//                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,androidImgs.get(i));
 //                    }
-//                });
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(FuliBean fuliBean) {
-                fulData.add(fuliBean);
-            }
-        });
-        HttpUtil.getInstance().getTuoData(2, 1, new Observer<TuoBean>() {
-            @Override
-            public void onCompleted() {
-                for (int i = 0; i< tuoImgs.size(); i++){
-                    final TuoBean tuoBean = tuoData.get(i);
-                    tuoDes.get(i).setText(tuoBean.getDesc());
-                    if (tuoBean.getImages()!=null&&tuoBean.getImages().size()>0){
-                        ImgLoadUtil.dispalyImage(tuoBean.getImages().get(0),tuoImgs.get(i));
-                    }else{
-                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,tuoImgs.get(i));
-                    }
-                    tuoImgs.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            StartUtil.startWebActivity(getContext(),tuoBean.getUrl());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(TuoBean tuoBean) {
-                tuoData.add(tuoBean);
-            }
-        });
+//                    androidImgs.get(i).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            StartUtil.startWebActivity(getContext(),androidBean.getUrl());
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(AndroidBean androidBean) {
+//                androidData.add(androidBean);
+//            }
+//        });
+//        ApiRequest.getInstance().getQianData(3, 1, new Observer<QianBean>() {
+//            @Override
+//            public void onCompleted() {
+//                for (int i=0; i<qianImgs.size();i++){
+//                    final QianBean qianBean = qianData.get(i);
+//                    qianDes.get(i).setText(qianBean.getDesc());
+//                    if (qianBean.getImages()!=null&&qianBean.getImages().size()>0){
+//                        ImgLoadUtil.displayImage(qianBean.getImages().get(0),qianImgs.get(i));
+//                    }else{
+//                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,qianImgs.get(i));
+//                    }
+//                    qianImgs.get(i).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            StartUtil.startWebActivity(getContext(),qianBean.getUrl());
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//            }
+//
+//            @Override
+//            public void onNext(QianBean qianBean) {
+//                qianData.add(qianBean);
+//            }
+//        });
+//        ApiRequest.getInstance().getFuliData(1, 1, new Observer<FuliBean>() {
+//            @Override
+//            public void onCompleted() {
+//                final FuliBean fuliBean = fulData.get(0);
+//                ImgLoadUtil.displayImage(fuliBean.getUrl(),fuliImg);
+//                //暂时跳转后有问题，先不用
+////                fuliImg.setOnClickListener(new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View view) {
+////                        StartUtil.startWebActivity(getContext(),fuliBean.getUrl());
+////                    }
+////                });
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(FuliBean fuliBean) {
+//                fulData.add(fuliBean);
+//            }
+//        });
+//        ApiRequest.getInstance().getTuoData(2, 1, new Observer<TuoBean>() {
+//            @Override
+//            public void onCompleted() {
+//                for (int i = 0; i< tuoImgs.size(); i++){
+//                    final TuoBean tuoBean = tuoData.get(i);
+//                    tuoDes.get(i).setText(tuoBean.getDesc());
+//                    if (tuoBean.getImages()!=null&&tuoBean.getImages().size()>0){
+//                        ImgLoadUtil.displayImage(tuoBean.getImages().get(0),tuoImgs.get(i));
+//                    }else{
+//                        ImgLoadUtil.displayLocalImage(R.drawable.img_default_meizi,tuoImgs.get(i));
+//                    }
+//                    tuoImgs.get(i).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            StartUtil.startWebActivity(getContext(),tuoBean.getUrl());
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//            }
+//
+//            @Override
+//            public void onNext(TuoBean tuoBean) {
+//                tuoData.add(tuoBean);
+//            }
+//        });
     }
     @Override
     protected void lazyLoad() {
@@ -266,7 +268,7 @@ public class XiaFragment extends BaseFragment {
 //        int year = Integer.parseInt(days[0]);
 //        int month = Integer.parseInt(days[1]);
 //        int day = Integer.parseInt(days[2]);
-//        HttpUtil.getInstance().getEveryDayData(year, month, day, new Observer<EveryDayBean>() {
+//        ApiRequest.getInstance().getEveryDayData(year, month, day, new Observer<EveryDayBean>() {
 //            @Override
 //            public void onCompleted() {
 //

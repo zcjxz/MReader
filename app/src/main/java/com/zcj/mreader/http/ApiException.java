@@ -1,14 +1,14 @@
 package com.zcj.mreader.http;
 
-public class ApiExcepion extends Exception{
+public class ApiException extends Exception{
     //服务器异常
     private static final int SERVER_ERROR = 1;
 
-    public ApiExcepion(int code){
+    public ApiException(int code){
         this(getApiException(code));
     }
 
-    public ApiExcepion(String message) {
+    public ApiException(String message) {
         super(message);
     }
 

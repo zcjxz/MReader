@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,20 @@ import android.widget.FrameLayout;
 import com.zcj.mreader.R;
 import com.zcj.mreader.adapter.AndroidAdapter;
 import com.zcj.mreader.base.BaseFragment;
+import com.zcj.mreader.base.BaseGankBean;
 import com.zcj.mreader.bean.gankBean.AndroidBean;
-import com.zcj.mreader.http.HttpUtil;
+import com.zcj.mreader.http.ApiManager;
+import com.zcj.mreader.http.ApiRequest;
+import com.zcj.mreader.utils.DebugUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 
 public class AndroidFragment extends BaseFragment {
@@ -93,34 +100,16 @@ public class AndroidFragment extends BaseFragment {
      */
     public void setData(final Boolean isLast){
         isLoading=true;
-        HttpUtil.getInstance().getAndroidData(num, page,
-                new Observer<AndroidBean>() {
+        Disposable subscribe = ApiRequest.getServer().getAndroidData(num, page)
+                .compose(ApiRequest.<BaseGankBean<AndroidBean>>preRequest())
+                .subscribe(new Consumer<BaseGankBean<AndroidBean>>() {
                     @Override
-                    public void onCompleted() {
-                        adapter.notifyDataSetChanged();
-                        showLoadingView(false);
-                        showErrorView(false);
-                        swipeRefreshLayout.setRefreshing(false);
-                        page++;
-                        isLoading=false;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        showLoadingView(false);
-                        showErrorView(true);
-                        isLoading=false;
-                    }
-
-                    @Override
-                    public void onNext(AndroidBean androidBean) {
-                        if (isLast){
-                            dataList.add(androidBean);
-                        }else{
-                            dataList.add(0,androidBean);
-                        }
+                    public void accept(BaseGankBean<AndroidBean> data) throws Exception {
+                        List<AndroidBean> androidBeanList = data.getResults();
+                        DebugUtil.debug(androidBeanList.toString());
                     }
                 });
+        addObserver(subscribe);
     }
 
     @Override

@@ -25,6 +25,8 @@ import com.zcj.mreader.R;
 import com.zcj.mreader.utils.DebugUtil;
 
 import butterknife.BindView;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -116,5 +118,16 @@ public class BaseActivity extends AppCompatActivity {
         }else {
             errorView.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private CompositeDisposable disposableSet=new CompositeDisposable();
+    protected void addObserver(Disposable disposable){
+        disposableSet.add(disposable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        disposableSet.clear();
+        super.onDestroy();
     }
 }
